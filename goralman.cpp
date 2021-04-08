@@ -11,14 +11,14 @@
 using namespace std;
 
 /* velikost mapy */
-#define ROWS 15 // ¯·dky
+#define ROWS 15 // ≈ô√°dky
 #define COLS 45 // sloupce
 
 /* velikost okna */
-#define CONSOLE_WIDTH 400 // öÌ¯ka
-#define CONSOLE_HEIGHT 300 // v˝öka
+#define CONSOLE_WIDTH 400 // ≈°√≠≈ôka
+#define CONSOLE_HEIGHT 300 // v√Ω≈°ka
 
-/* dlaûdice mapy */
+/* dla≈ædice mapy */
 #define ALL -1
 #define AIR 0
 #define BLOCK 1
@@ -32,14 +32,14 @@ char screenColor = 'f';
 int flashCount = 0;
 int foodCount = 0;
 
-/* hr·Ë */
+/* hr√°ƒç */
 int playerScore = 0, playerLives = 10;
 int playerX = COLS>>1, playerY = ROWS>>1;
 
 /* mapa */
 int map[ROWS][COLS];
 
-/* nep¯·telÈ */
+/* nep≈ô√°tel√© */
 typedef struct {
 	bool alive = false;
 	int x;
@@ -66,17 +66,17 @@ void setTextColor			(char c);
 
 int main() {
 	
-	/* nastavenÌ öÌ¯ky a v˝öky okna */
+	/* nastaven√≠ ≈°√≠≈ôky a v√Ω≈°ky okna */
 	HWND console = GetConsoleWindow();
 	RECT ConsoleRect;
 	GetWindowRect(console, &ConsoleRect);
 	
-	/* posunutÌ do st¯edu monitoru */
+	/* posunut√≠ do st≈ôedu monitoru */
 	int displayWidth  = GetSystemMetrics(SM_CXSCREEN);
 	int displayHeight = GetSystemMetrics(SM_CYSCREEN);
 	MoveWindow(console, (displayWidth>>1) - CONSOLE_WIDTH, (displayHeight>>1) - CONSOLE_HEIGHT, CONSOLE_WIDTH, CONSOLE_HEIGHT, TRUE);
 	
-	/* nastavenÌ fontu a velikosti pÌsma */
+	/* nastaven√≠ fontu a velikosti p√≠sma */
 	CONSOLE_FONT_INFOEX cfi;
 	cfi.cbSize = sizeof(cfi);
 	cfi.nFont = 0;
@@ -87,7 +87,7 @@ int main() {
 	std::wcscpy(cfi.FaceName, L"Consolas");
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 	
-	/* vypnout zobrazenÌ kurzoru */
+	/* vypnout zobrazen√≠ kurzoru */
 	HANDLE hOut;
 	CONSOLE_CURSOR_INFO ConCurInf;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -95,16 +95,16 @@ int main() {
 	ConCurInf.bVisible = FALSE;
 	SetConsoleCursorInfo(hOut, &ConCurInf);
 	
-	/*** GENEROV¡NÕ MAPY ***/
+	/*** GENEROV√ÅN√ç MAPY ***/
 	
-	/* ohraniËenÌ mapy */
+	/* ohraniƒçen√≠ mapy */
 	for(int y = 0; y < ROWS; y++) placeBlockSymetricY(BLOCK, 0, y);
 	for(int x = 1; x < COLS-1; x++) placeBlockSymetricX(BLOCK, x, 0);
 	
-	/* boËnÌ otvory na p¯echod */
+	/* boƒçn√≠ otvory na p≈ôechod */
 	placeBlockSymetricY(AIR, 0, ROWS>>1);
 	
-	/* vygeneruje vnit¯nÌ grid */
+	/* vygeneruje vnit≈ôn√≠ grid */
 	/*for(int y = 1; y < ROWS-1; y++) {
 		for(int x = 1; x < COLS-1; x++) {
 			int lt = map[y-1][x-1];
@@ -127,19 +127,19 @@ int main() {
 	
 	int midY = ROWS >> 1;
 	
-	/* komÌn br·ny po bocÌch */
+	/* kom√≠n br√°ny po boc√≠ch */
 	placeBlockSymetric(BLOCK, 1, midY-1);
 	placeBlockSymetric(BLOCK, 2, midY-1);
 	
-	/* boËnÌ svislÈ Ë·ry v okolÌ br·ny */
+	/* boƒçn√≠ svisl√© ƒç√°ry v okol√≠ br√°ny */
 	placeBlockSymetric(BLOCK, 4, midY-3);
 	placeBlockSymetric(BLOCK, 4, midY-2);
 	placeBlockSymetric(BLOCK, 4, midY-1);
 	
-	/* vodorovnÈ Ë·ry pokraËujÌcÌ od br·n */
+	/* vodorovn√© ƒç√°ry pokraƒçuj√≠c√≠ od br√°n */
 	placeBlockSymetric(BLOCK, 5, midY-2);
 	
-	/* hornÌ a dolnÌ lajny */
+	/* horn√≠ a doln√≠ lajny */
 	placeBlockSymetric(BLOCK, 2, midY-3);
 	placeBlockSymetric(BLOCK, 2, midY-4);
 	placeBlockSymetric(BLOCK, 2, midY-5);
@@ -148,7 +148,7 @@ int main() {
 	placeBlockSymetric(BLOCK, 4, midY-5);
 	placeBlockSymetric(BLOCK, 5, midY-5);
 	
-	/* p¯id·nÌ jÌdla */
+	/* p≈ôid√°n√≠ j√≠dla */
 	for(int y = 1; y < ROWS-1; y++) {
 		for(int x = 1; x < COLS-1; x++) {
 			if (map[y][x] != AIR) continue;
@@ -172,9 +172,9 @@ int main() {
 		}
 	}
 	
-	/*** KONEC GENEROV¡NÕ MAPY ***/
+	/*** KONEC GENEROV√ÅN√ç MAPY ***/
 
-	/* vytvo¯enÌ nep¯·tel */
+	/* vytvo≈ôen√≠ nep≈ô√°tel */
 	enemies[0].x = 5;
 	enemies[0].y = 6;
 	enemies[0].alive = 1;
@@ -183,14 +183,14 @@ int main() {
 	enemies[1].y = 10;
 	enemies[1].alive = 1;
 	
-	/* smyËka draw */
+	/* smyƒçka draw */
 	while(1) {
 		
-		/* vykreslenÌ mapy */
+		/* vykreslen√≠ mapy */
 		system("cls");
 		drawMap();
 		
-		/* blik·nÌ barev */
+		/* blik√°n√≠ barev */
 		if (flashCount > 0) {
 			screenColor = screenColor == 'f'?'c':'f';
 			setTextColor(screenColor);
@@ -199,13 +199,13 @@ int main() {
 			setTextColor('f');
 		}
 	
-		/* zÌsk·nÌ hr·Ëova tahu */
+		/* z√≠sk√°n√≠ hr√°ƒçova tahu */
 		int key = 0;
 		if (kbhit()) {
 			key = getch();
         }
 		
-		/* pohyb hr·Ëe */
+		/* pohyb hr√°ƒçe */
 		// pdx .. player delta x
 		// pdy .. player delta y
 		int pdx = 0, pdy = 0;
@@ -231,14 +231,14 @@ int main() {
 			playerY += pdy;
 		}
 		
-		/* zÌsk·nÌ jÌdla */
+		/* z√≠sk√°n√≠ j√≠dla */
 		if (getTile(playerX, playerY) == FOOD) {
 			playerScore++;
 			map[playerY][playerX] = 0;
 		}
 		
 		
-		/* st¯et nep¯·tel s hr·Ëem */
+		/* st≈ôet nep≈ô√°tel s hr√°ƒçem */
 		/* for (int e = 0; e < 10; e++) {
 			if (!enemies[e].alive) continue;
 			
@@ -254,18 +254,18 @@ int main() {
 			}
 		} */
 		
-		/* v p¯ÌpadÏ kdyû je hr·Ë mimo mapu, p¯esune ho to na druhou stranu */
+		/* v p≈ô√≠padƒõ kdy≈æ je hr√°ƒç mimo mapu, p≈ôesune ho to na druhou stranu */
 		if (playerX >= COLS) playerX = 0;
 		if (playerX < 0) playerX = COLS-1;
 		if (playerY >= ROWS) playerY = 0;
 		if (playerY < 0) playerY = ROWS-1;
 		
-		/* nastavÌ informace titulku okna hry */
+		/* nastav√≠ informace titulku okna hry */
 		wstringstream titleStream;
 		titleStream << "Jiri Sikora - GoralMan POINTS: " << playerScore << "/" << foodCount << " LIVES: " << playerLives;
 		SetConsoleTitleW(titleStream.str().c_str());
 		
-		/* pohyb nep¯·tel */
+		/* pohyb nep≈ô√°tel */
 		if (frameCount%2 == 0) {
 			for (int e = 0; e < 10; e++) {
 				if (!enemies[e].alive) continue;
@@ -320,7 +320,7 @@ void enemyMove(int e, int dx, int dy, int rdx, int rdy, int dis = 0) {
 	
 	int t = getSolidTile(eX+dx, eY+dy);
 
-	/* st¯et s hr·Ëem */
+	/* st≈ôet s hr√°ƒçem */
 	if (t == PLAYER) {
 		if (playerLives <= 0) {
 			/* END */
@@ -406,7 +406,7 @@ void drawMap() {
 	for (int y = 0; y < ROWS; y++) {
 		for (int x = 0; x < COLS; x++) {
 			
-			/* jestli je na pozici nep¯·tel, vykresli */
+			/* jestli je na pozici nep≈ô√°tel, vykresli */
 			bool founded = false;
 			for (int e = 0; e < 10; e++) {
 				if (!enemies[e].alive) continue;
@@ -418,13 +418,13 @@ void drawMap() {
 			}
 			if (founded) continue;
 			
-			/* jestli tam je hr·Ë, vykresli */
+			/* jestli tam je hr√°ƒç, vykresli */
 			if (x == playerX && y == playerY) {
 				cout << (char) 2;
 				continue;
 			}
 			
-			/* ostatnÌ pasivnÌ objekty na mapÏ */
+			/* ostatn√≠ pasivn√≠ objekty na mapƒõ */
 			switch (map[y][x]) {
 				case BLOCK:
 					cout << getTileTexture(x, y);
